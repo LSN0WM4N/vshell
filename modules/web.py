@@ -29,16 +29,11 @@ def WEB(bot):
     
     @web.route("/api/users")
     def api_users():
-        enc = JSONEncoder()        
-        dic = {}
-        for i in USERS.keys():
-            dic[i] = str(USERS[i])
-        return Response(enc.encode(dic),mimetype="application/json")
+        return jsonify(USERS[i] for i in USERS.keys)
     
     @web.route("/api/logs")
     def bot_logs():
-        enco = JSONEncoder()
-        return Response(enco.encode(Gvar.LOG),mimetype="application/json")
+        return jsonify(Gvar.LOG)
     
     @web.route("/api/stats")
     def bot_stats():
@@ -51,9 +46,7 @@ def WEB(bot):
                     stats[i][1] = stats[i][1].removeprefix(" ")
             except Exception as e:
                 print(e)
-        enc = JSONEncoder()
-        stats = enc.encode(stats)       
-        return Response(stats,mimetype="application/json")
+        return jsonify(stats)       
     
     @web.route("/api/queues")
     def QUEUES_SIZES():
@@ -61,20 +54,18 @@ def WEB(bot):
         queues = queues.split("\n")
         for i in range(len(queues)):
             queues[i] = queues[i].split(":")
-        di = {
+        return jsonify({
             "downloads":queues[0],
             "download_links":queues[1],
             "messages":queues[2],
             "to_send":queues[3]
-        }
-        return Response(di,mimetype="application/json")
+        })
     
     @web.route("/api/commands")
     def api_command():
-        enc = JSONEncoder()
         BOT_COMMANDS = Gvar.BOT_COMMANDS.copy()
         BOT_COMMANDS.pop(0)        
-        return Response(enc.encode(BOT_COMMANDS),mimetype="application/json")
+        return jsonify(BOT_COMMANDS)
     
     @web.route("/")
     def main():

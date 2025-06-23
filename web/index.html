@@ -129,9 +129,9 @@
 
 
 
-        function Command(data) {
-            return <div className='p-4 bg-slate-900 rounded-md  m-4'>
-                <b>{data.name}</b>: <span>{data.desc}</span>
+        function Command({ name, desc }) {
+            return <div className='p-4 bg-slate-900 rounded-md m-4'>
+                <b>{ name }</b>: <span>{ desc }</span>
             </div>
         }
 
@@ -149,25 +149,15 @@
 
             for (const key in data.comps) {
                 if (Object.hasOwnProperty.call(data.comps, key)) {
-
                     buttons.push(key);
-
                 }
             }
 
             console.log(data);
 
-            if (data.panel == 'visible') {
-
-                return <div className='w-96 h-full'>
-                    {buttons.map(button => <Button title={button} setActive={data.setActive} />)}
-                </div>
-            }
-            else {
-                return <div className='w-0 h-full overflow-hidden'>
-                    {buttons.map(button => <Button title={button} setActive={data.setActive} />)}
-                </div>
-            }
+            return <div className={data.panel == 'visible' ? 'w-96 h-full' : 'w-0 h-full overflow-hidden'}>
+                {buttons.map(button => <Button title={button} setActive={data.setActive} />)}
+            </div>
         }
 
         function Data(props) {
@@ -227,9 +217,6 @@
                 default:
                     return <div className='w-full bg-slate-950 pl-4 pr-7 pt-8 overflow-scroll overflow-scroll'>
                         <div className='text-5xl pb-8'></div>
-                        <div>
-
-                        </div>
                     </div>
             }
         }
@@ -254,11 +241,7 @@
 
 
             function handle_click() {
-                if (panel_state == 'hidden') {
-                    toggle_panel('visible');
-                } else {
-                    toggle_panel('hidden');
-                }
+                toggle_panel(prev => prev == 'visible' ? 'hidden' : 'visible');
             }
 
 
